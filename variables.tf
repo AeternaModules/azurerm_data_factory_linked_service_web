@@ -29,5 +29,63 @@ EOT
     password                 = optional(string)
     username                 = optional(string)
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_linked_service_webs : (
+        length(v.authentication_type) > 0
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_linked_service_webs : (
+        length(v.url) > 0
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_linked_service_webs : (
+        v.username == null || (length(v.username) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_linked_service_webs : (
+        v.password == null || (length(v.password) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_linked_service_webs : (
+        v.description == null || (length(v.description) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.data_factory_linked_service_webs : (
+        v.integration_runtime_name == null || (length(v.integration_runtime_name) > 0)
+      )
+    ])
+    error_message = "must not be empty"
+  }
+  # --- Unconfirmed validation candidates, derived from azurerm_data_factory_linked_service_web's provider source ---
+  # Not auto-enabled: either a bespoke provider validator we can't safely translate,
+  # or a path that crosses a list-typed block (needs its own for_each wrapping).
+  # Review, translate into a real validation{} block above, and delete once confirmed.
+  # path: name
+  #   source:    [from validate.LinkedServiceDatasetName] regexp.MustCompile(`^[-.+?/<>*%&:\\]+$`).MatchString(value)
+  # path: data_factory_id
+  #   source:    [from factories.ValidateFactoryID] !ok
+  # path: data_factory_id
+  #   source:    [from factories.ValidateFactoryID] err != nil
 }
 

@@ -13,21 +13,25 @@ Optional:
     - integration_runtime_name
     - parameters
     - password
+    - password_key_vault_id (alternative to password - read from Key Vault instead)
+    - password_key_vault_secret_name (alternative to password - read from Key Vault instead)
     - username
 EOT
 
   type = map(object({
-    authentication_type      = string
-    data_factory_id          = string
-    name                     = string
-    url                      = string
-    additional_properties    = optional(map(string))
-    annotations              = optional(list(string))
-    description              = optional(string)
-    integration_runtime_name = optional(string)
-    parameters               = optional(map(string))
-    password                 = optional(string)
-    username                 = optional(string)
+    authentication_type            = string
+    data_factory_id                = string
+    name                           = string
+    url                            = string
+    additional_properties          = optional(map(string))
+    annotations                    = optional(list(string))
+    description                    = optional(string)
+    integration_runtime_name       = optional(string)
+    parameters                     = optional(map(string))
+    password                       = optional(string)
+    password_key_vault_id          = optional(string)
+    password_key_vault_secret_name = optional(string)
+    username                       = optional(string)
   }))
   validation {
     condition = alltrue([
